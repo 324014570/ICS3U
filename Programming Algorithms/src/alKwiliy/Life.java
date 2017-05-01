@@ -1,15 +1,17 @@
 package alKwiliy;
 
 import java.util.Scanner;
-
+/**
+ * this program checks the alive and dead cells in a grid and changes them according to the amount of alive cells surrounding it
+ * @author Fayez Al-kwiliy
+ *01/05/2017
+ */
 public class Life {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the amount of alive cells");
 		int numAliveCells = sc.nextInt();
-		System.out.println("Enter the amount of days");
-		int numDays = sc.nextInt();
 		int[][] arr = new int[20][20];
 		int [][]newGrid=new int[20][20];
 		System.out.println("Please enter the coordinates for the alive cells");
@@ -34,27 +36,24 @@ public class Life {
 		}
 		sc.nextLine();
 
-
 		do {
+			for (int j = 0; j < arr.length; j++) {
+				for (int a = 0; a < arr[j].length; a++) {
 
-
-			for (int i = 0; i < arr.length; i++) {
-				for (int j = 0; j < arr[i].length; j++) {
-
-					if (arr[i][j] == 1){
-						if(numberOfAliveNeighbours(arr) == 2 || numberOfAliveNeighbours(arr) == 3){
-							newGrid[i][j] = 1;
+					if (arr[j][a] == 1){
+						if(numberOfAliveNeighbours(arr, j, a) == 2 || numberOfAliveNeighbours(arr, j, a) == 3){
+							newGrid[j][a] = 1;
 						}
 						else{
-							newGrid[i][j] = 0;
+							newGrid[j][a] = 0;
 						}	
 					}
-					else if (arr[i][j] == 0){
-						if(numberOfDeadNeighbours(arr) == 3){
-							newGrid[i][j] = 1;
+					else if (arr[j][a] == 0){
+						if(numberOfDeadNeighbours(arr, j, a) == 3){
+							newGrid[j][a] = 1;
 						}
 						else{
-							newGrid[i][j] = 0;
+							newGrid[j][a] = 0;
 						}
 
 					}
@@ -65,6 +64,9 @@ public class Life {
 			}
 
 			arr = newGrid;
+
+
+
 			System.out.println("Next Day:\n\n");
 			for (int i = 0; i < arr.length; i++) {
 				for (int j = 0; j < arr[i].length; j++) {
@@ -72,411 +74,415 @@ public class Life {
 				}
 				System.out.println();
 			}
-			System.out.println("Continue to to the next day? (Type 'yes' or 'no')");
+			System.out.println("Want to continue to to the next day? (Type 'yes' or 'no')");
 			nextDay = sc.nextLine();
 		} while (nextDay.equalsIgnoreCase("yes"));
 	}
 
-	
-}
-
-public static int numberOfAliveNeighbours(int[][] arr) {
-	int aliveNeighbours = 0;
 
 
-
-	for (int j = 0; j < arr.length; j++) {
-		for (int a = 0; a < arr[j].length; a++) {
-			//checks the number of cells surrounding it if its not at the edge or the corner
-			if (j != 0 && j != 19 && a != 0 && a != 19){
-				if (arr[j][a] == 1) {
-					if (arr[j - 1][a - 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j][a - 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j + 1][a - 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j - 1][a] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j + 1][a] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j - 1][a + 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j][a + 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j + 1][a + 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
+/**
+ * This method checks the number alive neighbours surrounding an alive cell
+ * @param arr the grid
+ * @param a the row
+ * @param j the column
+ * @return how many alive neighbours there are surrounding the alive cell
+ */
+	public static int numberOfAliveNeighbours(int[][] arr, int a, int j) {
+		int aliveNeighbours = 0;
+		//checks the number of cells surrounding it if its not at the edge or the corner
+		if (j != 0 && j != 19 && a != 0 && a != 19){
+			if (arr[j][a] == 1) {
+				if (arr[j - 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				// cells at top row, not including corners 
-				else if (a == 0 && j != 0 && j != 19){
-					if (arr[j][a] == 1) {
-						if (arr[j - 1][a] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j + 1][a] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j - 1][a + 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j][a + 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j + 1][a + 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-					}
-
-
+				if (arr[j][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				// cells at the left edge, not including corners
-				else if (j == 0 && !(a == 0 && a == 19)){
-					if (j != 0 && j != 20 && a != 0 && a != 20){
-						if (arr[j][a] == 1) {
-							if (arr[j][a - 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j + 1][a - 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j + 1][a] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j][a + 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j + 1][a + 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-						}
-
-					}
-
-
+				if (arr[j + 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				// cells at the right edge, not including corners
-				else if (j == 19 && a != 0 && a != 19){
-					if (j != 0 && j != 20 && a != 0 && a != 20){
-						if (arr[j][a] == 1) {
-							if (arr[j][a - 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j - 1][a - 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j - 1][a] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j][a + 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-							if (arr[j - 1][a + 1] == 1) {
-								aliveNeighbours = aliveNeighbours + 1;
-							}
-						}
-
-					}
-
-
+				if (arr[j - 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				// cells at bottom row, not including corners 
-				else if (a == 0 && j != 0 && j != 19){
-					if (arr[j][a] == 1) {
-						if (arr[j - 1][a] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j + 1][a] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j - 1][a - 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j][a - 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j + 1][a - 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-					}
-
-
+				if (arr[j + 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				//cells at top left corner
-				else if (j == 0 && a == 0){
-					if (arr[j][a] == 1) {	
-						if (arr[j + 1][a] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j][a + 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j + 1][a + 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-					}
-
-
-
+				if (arr[j - 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				//cells at top right corner
-				else if (j == 19 && a == 0){
-					if (arr[j][a] == 1) {	
-						if (arr[j - 1][a] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j][a + 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j - 1][a + 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-					}
-
-
+				if (arr[j][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				//cells at bottom left corner
-				else if (j == 0 && a == 19){
-					if (arr[j][a] == 1) {	
-						if (arr[j + 1][a] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j][a - 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-						if (arr[j + 1][a - 1] == 1) {
-							aliveNeighbours = aliveNeighbours + 1;
-						}
-					}
+				if (arr[j + 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-
-			}
-			//cells at bottom right corner
-			else if (j == 19 && a == 19){
-				if (arr[j][a] == 1) {	
-					if (arr[j - 1][a] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j][a - 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-					if (arr[j - 1][a - 1] == 1) {
-						aliveNeighbours = aliveNeighbours + 1;
-					}
-				}
-
 			}
 		}
-	}
-	return aliveNeighbours;
-}
-
-
-
-public static int numberOfDeadNeighbours(int[][] arr) {
-
-	int deadNeighbours = 0;
-
-
-
-	for (int j = 0; j < arr.length; j++) {
-		for (int a = 0; a < arr[j].length; a++) {
-			//checks the number of cells surrounding it if its not at the edge or the corner
-			if (j != 0 && j != 19 && a != 0 && a != 19){
-				if (arr[j][a] == 1) {
-					if (arr[j - 1][a - 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j][a - 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j + 1][a - 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j - 1][a] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j + 1][a] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j - 1][a + 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j][a + 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j + 1][a + 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
+		//cells at top left corner
+		else if (j == 0 && a == 0){
+			if (arr[j][a] == 1) {	
+				if (arr[j + 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				// cells at top row, not including corners 
-				else if (a == 0 && j != 0 && j != 19){
-					if (arr[j][a] == 1) {
-						if (arr[j - 1][a] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j + 1][a] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j - 1][a + 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j][a + 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j + 1][a + 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-					}
-
-
+				if (arr[j][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				// cells at the left edge, not including corners
-				else if (j == 0 && !(a == 0 && a == 19)){
-					if (j != 0 && j != 20 && a != 0 && a != 20){
-						if (arr[j][a] == 1) {
-							if (arr[j][a - 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j + 1][a - 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j + 1][a] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j][a + 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j + 1][a + 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-						}
-
-					}
-
-
+				if (arr[j + 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
 				}
-				// cells at the right edge, not including corners
-				else if (j == 19 && a != 0 && a != 19){
-					if (j != 0 && j != 20 && a != 0 && a != 20){
-						if (arr[j][a] == 1) {
-							if (arr[j][a - 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j - 1][a - 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j - 1][a] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j][a + 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-							if (arr[j - 1][a + 1] == 1) {
-								deadNeighbours = deadNeighbours + 1;
-							}
-						}
-
-					}
-
-
-				}
-				// cells at bottom row, not including corners 
-				else if (a == 0 && j != 0 && j != 19){
-					if (arr[j][a] == 1) {
-						if (arr[j - 1][a] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j + 1][a] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j - 1][a - 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j][a - 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j + 1][a - 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-					}
-
-
-				}
-				//cells at top left corner
-				else if (j == 0 && a == 0){
-					if (arr[j][a] == 1) {	
-						if (arr[j + 1][a] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j][a + 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j + 1][a + 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-					}
-
-
-
-				}
-				//cells at top right corner
-				else if (j == 19 && a == 0){
-					if (arr[j][a] == 1) {	
-						if (arr[j - 1][a] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j][a + 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j - 1][a + 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-					}
-
-
-				}
-				//cells at bottom left corner
-				else if (j == 0 && a == 19){
-					if (arr[j][a] == 1) {	
-						if (arr[j + 1][a] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j][a - 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-						if (arr[j + 1][a - 1] == 1) {
-							deadNeighbours = deadNeighbours + 1;
-						}
-					}
-				}
-
 			}
-			//cells at bottom right corner
-			else if (j == 19 && a == 19){
-				if (arr[j][a] == 1) {	
-					if (arr[j - 1][a] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j][a - 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-					if (arr[j - 1][a - 1] == 1) {
-						deadNeighbours = deadNeighbours + 1;
-					}
-				}
 
+
+
+		}
+		//cells at top right corner
+		else if (j == 19 && a == 0){
+			if (arr[j][a] == 1) {	
+				if (arr[j - 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j - 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+			}
+
+
+		}
+		//cells at bottom left corner
+		else if (j == 0 && a == 19){
+			if (arr[j][a] == 1) {	
+				if (arr[j + 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
 			}
 		}
-	}
-	return deadNeighbours;
 
-}
+
+		//cells at bottom right corner
+		else if (j == 19 && a == 19){
+			if (arr[j][a] == 1) {	
+				if (arr[j - 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j - 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+			}
+
+		}
+		// cells at top row, not including corners 
+		else if (a == 0){
+			if (arr[j][a] == 1) {
+				if (arr[j - 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j - 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+			}
+
+		}
+
+		// cells at the left edge, not including corners
+		else if (j == 0 ){
+			if (arr[j][a] == 1) {
+				if (arr[j][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+
+
+			}
+
+
+		}
+		// cells at the right edge, not including corners
+		else if (j == 19){
+			if (arr[j][a] == 1) {
+				if (arr[j][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j - 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j - 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j - 1][a + 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+
+
+			}
+
+
+		}
+
+		// cells at bottom row, not including corners 
+		else if (a == 19){
+			if (arr[j][a] == 1) {
+				if (arr[j - 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j - 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+				if (arr[j + 1][a - 1] == 1) {
+					aliveNeighbours = aliveNeighbours + 1;
+				}
+			}
+
+
+		}
+
+
+
+		return aliveNeighbours;
+	}
+
+
+	/**
+	 * This method checks the number alive neighbours surrounding a dead cell
+	 * @param arr the grid
+	 * @param a the row
+	 * @param j the column
+	 * @return how many alive neighbours there are surrounding the dead cell
+	 */
+	public static int numberOfDeadNeighbours(int[][] arr, int a, int j) {
+
+		int deadNeighbours = 0;
+
+
+		//checks the number of cells surrounding it if its not at the edge or the corner
+		if (j != 0 && j != 19 && a != 0 && a != 19){
+			if (arr[j - 1][a - 1] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+			if (arr[j][a - 1] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+			if (arr[j + 1][a - 1] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+			if (arr[j - 1][a] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+			if (arr[j + 1][a] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+			if (arr[j - 1][a + 1] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+			if (arr[j][a + 1] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+			if (arr[j + 1][a + 1] == 1) {
+				deadNeighbours = deadNeighbours + 1;
+			}
+
+		}
+		//cells at top left corner
+		else if (j == 0 && a == 0){
+			if (arr[j][a] == 1) {	
+				if (arr[j + 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+			}
+
+
+
+		}
+		//cells at top right corner
+		else if (j == 19 && a == 0){
+			if (arr[j][a] == 1) {	
+				if (arr[j - 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j - 1][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+			}
+
+
+		}
+		//cells at bottom left corner
+		else if (j == 0 && a == 19){
+			if (arr[j][a] == 1) {	
+				if (arr[j + 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+			}
+		}
+
+
+		//cells at bottom right corner
+		else if (j == 19 && a == 19){
+			if (arr[j][a] == 1) {	
+				if (arr[j - 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j - 1][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+			}
+
+		}
+		// cells at top row, not including corners 
+		else if (a == 0){
+			if (arr[j][a] == 1) {
+				if (arr[j - 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j - 1][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+			}
+		}
+
+
+		// cells at the left edge, not including corners
+		else if (j == 0 ){
+
+			if (arr[j][a] == 1) {
+				if (arr[j][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+
+
+			}
+
+
+		}
+		// cells at the right edge, not including corners
+		else if (j == 19 ){
+			if (arr[j][a] == 1) {
+				if (arr[j][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j - 1][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j - 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j - 1][a + 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+			}
+
+		}
+
+
+
+		// cells at bottom row, not including corners 
+		else if (a ==19 ){
+			if (arr[j][a] == 1) {
+				if (arr[j - 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j - 1][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+				if (arr[j + 1][a - 1] == 1) {
+					deadNeighbours = deadNeighbours + 1;
+				}
+			}
+
+
+		}
+
+
+		return deadNeighbours;
+
+	}
 }
