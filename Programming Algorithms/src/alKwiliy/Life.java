@@ -1,7 +1,9 @@
 package alKwiliy;
 
+import java.util.Arrays;
 import java.util.Scanner;
 /**
+ * Life.java
  * this program checks the alive and dead cells in a grid and changes them according to the amount of alive cells surrounding it
  * @author Fayez Al-kwiliy
  *01/05/2017
@@ -41,7 +43,7 @@ public class Life {
 				for (int a = 0; a < arr[j].length; a++) {
 
 					if (arr[j][a] == 1){
-						if(numberOfAliveNeighbours(arr, j, a) == 2 || numberOfAliveNeighbours(arr, j, a) == 3){
+						if(numberOfAliveNeighbours(arr, a, j) == 2 || numberOfAliveNeighbours(arr, j, a) == 3){
 							newGrid[j][a] = 1;
 						}
 						else{
@@ -49,7 +51,7 @@ public class Life {
 						}	
 					}
 					else if (arr[j][a] == 0){
-						if(numberOfDeadNeighbours(arr, j, a) == 3){
+						if(numberOfDeadNeighbours(arr, a, j) == 3){
 							newGrid[j][a] = 1;
 						}
 						else{
@@ -63,7 +65,13 @@ public class Life {
 				}
 			}
 
-			arr = newGrid;
+			
+			for (int i = 0; i < arr.length; i++) {
+				for (int j = 0; j < arr[i].length; j++) {
+					arr[i][j] = newGrid[i][j];
+					newGrid[i][j] = 0;
+				}
+			}
 
 
 
@@ -325,7 +333,7 @@ public class Life {
 		}
 		//cells at top left corner
 		else if (j == 0 && a == 0){
-			if (arr[j][a] == 1) {	
+			if (arr[j][a] == 0) {	
 				if (arr[j + 1][a] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
@@ -342,7 +350,7 @@ public class Life {
 		}
 		//cells at top right corner
 		else if (j == 19 && a == 0){
-			if (arr[j][a] == 1) {	
+			if (arr[j][a] == 0) {	
 				if (arr[j - 1][a] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
@@ -358,7 +366,7 @@ public class Life {
 		}
 		//cells at bottom left corner
 		else if (j == 0 && a == 19){
-			if (arr[j][a] == 1) {	
+			if (arr[j][a] == 0) {	
 				if (arr[j + 1][a] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
@@ -374,7 +382,7 @@ public class Life {
 
 		//cells at bottom right corner
 		else if (j == 19 && a == 19){
-			if (arr[j][a] == 1) {	
+			if (arr[j][a] == 0) {	
 				if (arr[j - 1][a] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
@@ -389,7 +397,7 @@ public class Life {
 		}
 		// cells at top row, not including corners 
 		else if (a == 0){
-			if (arr[j][a] == 1) {
+			if (arr[j][a] == 0) {
 				if (arr[j - 1][a] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
@@ -412,7 +420,7 @@ public class Life {
 		// cells at the left edge, not including corners
 		else if (j == 0 ){
 
-			if (arr[j][a] == 1) {
+			if (arr[j][a] == 0) {
 				if (arr[j][a - 1] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
@@ -436,7 +444,7 @@ public class Life {
 		}
 		// cells at the right edge, not including corners
 		else if (j == 19 ){
-			if (arr[j][a] == 1) {
+			if (arr[j][a] == 0) {
 				if (arr[j][a - 1] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
@@ -460,7 +468,7 @@ public class Life {
 
 		// cells at bottom row, not including corners 
 		else if (a ==19 ){
-			if (arr[j][a] == 1) {
+			if (arr[j][a] == 0) {
 				if (arr[j - 1][a] == 1) {
 					deadNeighbours = deadNeighbours + 1;
 				}
