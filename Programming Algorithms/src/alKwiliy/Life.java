@@ -213,7 +213,7 @@ public class Life {
 
 		}
 
-		// cells at the left edge, not including corners
+		// cells at the left edge, not including corners.
 		else if (j == 0 ){
 			if (arr[j][a] == 1) {
 				if (arr[j][a - 1] == 1) {
