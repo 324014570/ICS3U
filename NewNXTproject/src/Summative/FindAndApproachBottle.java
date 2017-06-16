@@ -1,5 +1,10 @@
 package Summative;
-
+/**
+ * FindAndApproachBottle.java
+ * Looks for a bottle in the field/area, hits it if it doesn't have black tape 
+ * 15/06/2017
+ * @author Fayez Al-kwiliy
+ */
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
@@ -11,12 +16,17 @@ public class FindAndApproachBottle implements Behavior {
 	private UltrasonicSensor ultra = new UltrasonicSensor(SensorPort.S1);
 	private LightSensor light = new LightSensor(SensorPort.S4);
 
-	@Override
+	/**
+	 * suppress is now true
+	 */
 	public void suppress() {
 		// TODO Auto-generated method stub
 		suppressed = true;
 
 	}
+	/**
+	 * if the distance between the object and sensor is less than 75.3 then takes control
+	 */
 	@Override
 	public boolean takeControl() {
 		// TODO Auto-generated method stub
@@ -25,7 +35,9 @@ public class FindAndApproachBottle implements Behavior {
 		}
 		return false;
 	}
-
+	/**
+	 * if the object is within 17 cm of the ultrasonic sensor and it doesn't have black tape on it then it hits it
+	 */
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
@@ -38,7 +50,7 @@ public class FindAndApproachBottle implements Behavior {
 		Motor.A.stop();
 		Motor.B.stop();
 
-		if(light.getLightValue() < 25){
+		if(light.getLightValue() > 25){
 			Motor.C.rotate(90);
 			Motor.C.rotate(-90);
 		}

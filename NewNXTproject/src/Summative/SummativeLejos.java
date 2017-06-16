@@ -14,7 +14,7 @@ public class SummativeLejos {
 		Behavior b0 = new Stop();
 		Behavior b1 = new FindAndApproachBottle();
 		Behavior b2 = new AvoidBlack();
-		Behavior []bz = {b0, b1, b2};
+		Behavior []bz = {b1, b2,b0};
 		Arbitrator a = new Arbitrator(bz);
 		a.start();
 	}

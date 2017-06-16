@@ -1,35 +1,42 @@
 package Summative;
+/**
+ * Stop.java
+ * Ends the program
+ * 15/06/2017
+ * @author Fayez Al-kwiliy
+ */
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.robotics.subsumption.Behavior;
 
 public class Stop implements Behavior {
-	private boolean supressed = false;
+	/**
+	 * no suppress
+	 */
 	@Override
 	public void suppress() {
 		// TODO Auto-generated method stub
-		supressed = true;
 
 	}
-
-
-
-public boolean takeControl() {
-	// TODO Auto-generated method stub
-	if(Button.ESCAPE.isDown()){
-		return true;
+	/**
+	 * takes control if the button is pressed
+	 */
+	public boolean takeControl() {
+		// TODO Auto-generated method stub
+		if (Button.ESCAPE.isDown()) {
+			return true;
+		}
+		return false;
 	}
-	return false;
-}
-
-@Override
-public void action() {
-	// TODO Auto-generated method stub
-	Motor.A.stop();
-	Motor.B.stop();
-}
-
-
+	/**
+	 *Robot stops moving  
+	 */
+	@Override
+	public void action() {
+		// TODO Auto-generated method stub
+		Motor.A.stop();
+		Motor.B.stop();
+	}
 
 }
